@@ -33,9 +33,9 @@ app.use('/', async (req, res) => {
     const { render } = await import('./dist/server/entry-server.js');
 
     // 执行服务器端渲染
-    const { html } = await render(req.url);
+    const { html, styleText } = await render(req.url);
 
-    const finalHtml = templateHtmlFile.replace(`<!--ssr-outlet-->`, html)
+    const finalHtml = templateHtmlFile.replace(`<!--antd-style-->`, styleText).replace(`<!--ssr-outlet-->`, html)
     res.status(200).set({ 'Content-Type': 'text/html' }).end(finalHtml)
   } catch (err) {
     console.error('服务器渲染错误:', err);
