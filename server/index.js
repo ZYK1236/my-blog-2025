@@ -79,9 +79,9 @@ async function createServer() {
       render = (await import('./dist/server/entry-server.js')).render
     }
 
-    const appHtml = await render(url).html
+    const { html: appHtml, styleText: antdStyle } = await render(url);
     // 5. 注入渲染后的应用程序 HTML 到模板中。
-    const html = template.replace(`<!--ssr-outlet-->`, appHtml)
+    const html = template.replace(`<!--antd-style-->`, antdStyle).replace(`<!--ssr-outlet-->`, appHtml)
     // 6. 返回渲染后的 HTML。
     res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
   })

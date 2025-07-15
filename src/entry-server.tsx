@@ -1,10 +1,20 @@
 // src/entry-server.js
-import React from 'react'
+import { useMemo } from 'react'
+import { createCache, extractStyle, StyleProvider } from '@ant-design/cssinjs';
+import type Entity from '@ant-design/cssinjs/es/Cache';
 import { renderToString } from 'react-dom/server'
 import App from './app'
 
+const cache = createCache();
+
 export function render(url: string) {
-  // 这里可以执行 SSR 数据预取（如调用 API）
-  const html = renderToString(<App />)
-  return { html }
+  const html = renderToString(
+    <StyleProvider cache={cache}>
+      <App />
+    </StyleProvider>,
+  );
+
+  const styleText = extractStyle(cache);
+
+  return { html, styleText }
 }

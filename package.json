@@ -4,6 +4,7 @@
     "@babel/core": "^7.28.0",
     "@babel/preset-env": "^7.28.0",
     "@babel/preset-react": "^7.27.1",
+    "antd": "^5.26.4",
     "compression": "^1.8.0",
     "crypto": "^1.0.1",
     "crypto-es": "^2.1.0",
