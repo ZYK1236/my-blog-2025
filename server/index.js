@@ -47,6 +47,23 @@ async function createServer() {
     app.use(base, sirv('./dist/client', { extensions: [] }));
   }
 
+  // API端点：获取单个博客内容
+  app.get('/api/blogs/:filename', (req, res) => {
+    const { filename } = req.params;
+    const filePath = path.join(__dirname, `../blogs/${filename}`);
+
+    if (!filename.endsWith('.md')) {
+      return res.status(400).json({ error: '无效的文件类型' });
+    }
+
+    try {
+      const content = fs.readFileSync(filePath, 'utf8');
+      res.send(content);
+    } catch (error) {
+      res.status(404).json({ error: '博客不存在' });
+    }
+  });
+
   app.use('*all', async (req, res, next) => {
     const url = req.originalUrl;
     let template;
@@ -70,7 +87,6 @@ async function createServer() {
         //    并提供了一种高效的模块失效机制，类似于模块热替换（HMR）。
         render = (await vite.ssrLoadModule('/src/entry-server.tsx')).render;
       } catch (e) {
-        console.log('appHtml error:', e);
         vite.ssrFixStacktrace(e)
         next(e)
       }
