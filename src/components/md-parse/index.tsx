@@ -1,20 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import ReactMarkdown from 'react-markdown';
+import { DataLoaderWrapper } from "../../data-loader";
+import MdParse from "./component";
 
-const MdParse = () => {
-  const [markdown, setMarkDown] = useState('');
+// http://localhost:8080/blogs 
+const httpLoader = () => fetch('http://localhost:8080/blogs').then(res => res.text());
 
-  useEffect(() => {
-    fetch('/api/blogs/index.md').then(res => res.text()).then(res => {
-      setMarkDown(res);
-    })
-  }, []);
-
+const MdParseWithDataLoader = () => {
   return (
-    <div className="markdown-container">
-      <ReactMarkdown>{markdown}</ReactMarkdown>
-    </div>
-  );
-};
+    <DataLoaderWrapper httpLoader={httpLoader}>
+      {(data, loading, error) => (
+        <MdParse data={data} loading={loading} error={error} />
+      )}
+    </DataLoaderWrapper>
+  )
+}
 
-export default MdParse;
+export default MdParseWithDataLoader;
