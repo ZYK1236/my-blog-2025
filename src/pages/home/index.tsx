@@ -11,7 +11,11 @@ import MdParse from '../../components/md-parse';
 
 const { Sider, Content } = Layout;
 
-const Home: React.FC = () => {
+interface HomeProps {
+  initialData?: string;
+}
+
+const Home: React.FC<HomeProps> = ({ initialData }) => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
@@ -53,7 +57,7 @@ const Home: React.FC = () => {
             borderRadius: borderRadiusLG,
           }}
         >
-          <MdParse />
+          <MdParse initialData={initialData} />
         </Content>
       </Layout>
     </Layout>

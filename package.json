@@ -18,6 +18,7 @@
     "sirv": "^3.0.1"
   },
   "devDependencies": {
+    "@types/google-protobuf": "^3.15.12",
     "@types/node": "^24.0.13",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
@@ -31,8 +32,6 @@
     "build:client": "vite build --outDir dist/client",
     "build:server": "vite build --outDir dist/server --ssr src/entry-server.js",
     "serve": "nodemon server.js",
-    "proto:generate": "mkdir -p proto/pb && npx protoc --plugin=protoc-gen-ts=$(which protoc-gen-ts) --ts_out=proto/pb --js_out=import_style=commonjs,binary:proto/pb -I proto proto/*.proto",
-    "proto:watch": "nodemon --watch proto --ext proto --exec npm run proto:generate",
     "proto:sync": "node scripts/sync-proto.js"
   },
   "//": "To add new proto files, place them in the proto/ directory and run 'npm run proto:generate' to generate the corresponding JavaScript and TypeScript files."

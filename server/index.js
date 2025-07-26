@@ -78,9 +78,17 @@ async function createServer() {
       render = (await import('./dist/server/entry-server.js')).render
     }
 
-    const { html: appHtml, styleText: antdStyle } = await render(url);
+    const { html: appHtml, styleText, initialData } = await render(url);
+    
+    // 将初始数据注入到客户端
+    const initialDataScript = `<script>window.__INITIAL_DATA__ = ${JSON.stringify(initialData)};</script>`;
+    
     // 5. 注入渲染后的应用程序 HTML 到模板中。
-    const html = template.replace(`<!--antd-style-->`, antdStyle).replace(`<!--ssr-outlet-->`, appHtml)
+    const html = template
+      .replace(`<!--antd-style-->`, styleText)
+      .replace(`<!--ssr-outlet-->`, appHtml)
+      .replace(`<!--initial-data-->`, initialDataScript);
+      
     // 6. 返回渲染后的 HTML。
     res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
   })

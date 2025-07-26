@@ -33,9 +33,16 @@ app.use('/', async (req, res) => {
     const { render } = await import('./dist/server/entry-server.js');
 
     // 执行服务器端渲染
-    const { html, styleText } = await render(req.url);
+    const { html, styleText, initialData } = await render(req.url);
+    
+    // 将初始数据注入到客户端
+    const initialDataScript = `<script>window.__INITIAL_DATA__ = ${JSON.stringify(initialData)};</script>`;
 
-    const finalHtml = templateHtmlFile.replace(`<!--antd-style-->`, styleText).replace(`<!--ssr-outlet-->`, html)
+    const finalHtml = templateHtmlFile
+      .replace(`<!--antd-style-->`, styleText)
+      .replace(`<!--ssr-outlet-->`, html)
+      .replace(`<!--initial-data-->`, initialDataScript);
+      
     res.status(200).set({ 'Content-Type': 'text/html' }).end(finalHtml)
   } catch (err) {
     console.error('服务器渲染错误:', err);
@@ -46,4 +53,4 @@ app.use('/', async (req, res) => {
 // 启动服务器
 app.listen(PORT, () => {
   console.log(`服务器运行在 http://localhost:${PORT}`);
-});  
+});

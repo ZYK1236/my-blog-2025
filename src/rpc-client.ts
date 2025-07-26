@@ -1,6 +1,9 @@
 import grpc from '@grpc/grpc-js';
 import protoLoader from '@grpc/proto-loader';
-import path from 'path';
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 // 定义选项
 const PROTO_OPTIONS = {
