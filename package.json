@@ -31,6 +31,7 @@
     "dev": "nodemon server/index.js",
     "build:client": "vite build --outDir dist/client",
     "build:server": "vite build --outDir dist/server --ssr src/entry-server.js",
+    "build": "npm run build:client && npm run build:server",
     "serve": "nodemon server.js",
     "proto:sync": "node scripts/sync-proto.js",
     "proto:generate": "protoc --plugin=protoc-gen-ts=./node_modules/.bin/protoc-gen-ts --js_out=import_style=commonjs,binary:proto/pb --ts_out=proto/pb --proto_path=proto proto/calculator.proto"
