@@ -8,26 +8,21 @@ interface MdParseWrapperProps {
 }
 
 const MdParseWrapper: React.FC<MdParseWrapperProps> = ({ initialData }) => {
-  const [data, setData] = useState<string>(initialData || '');
+  const processedData = processData(initialData || '');
+  const formattedData = formatData(processedData);
+  const [data, setData] = useState<string>(formattedData);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     // 如果有初始数据（来自服务端渲染的 RPC 结果），直接使用
     if (initialData) {
-      try {
-        const processedData = processData(initialData);
-        const formattedData = formatData(processedData);
-        setData(formattedData);
-      } catch (err) {
-        const errorMessage = handleError(err as Error);
-        setError(errorMessage);
-      }
       return;
     }
 
     // 如果没有初始数据，说明 RPC 失败了，执行 HTTP 兜底请求
     const fetchData = async () => {
+      console.log('httpLoader 兜底请求');
       setLoading(true);
       setError(null);
       try {
