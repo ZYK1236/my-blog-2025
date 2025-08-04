@@ -3,7 +3,7 @@ import { ConfigProvider } from 'antd'
 import Home from './pages/home';
 
 interface AppProps {
-  initialData?: string;
+  initialData?: Record<string, any>;
 }
 
 const App: React.FC<AppProps> = ({ initialData }) => (
@@ -13,7 +13,7 @@ const App: React.FC<AppProps> = ({ initialData }) => (
     },
   }}>
     <div className="App">
-      <Home initialData={initialData} />
+      <Home initialData={initialData?.MdParse?.data} />
     </div>
   </ConfigProvider>
 );
